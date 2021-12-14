@@ -1,0 +1,203 @@
+<app-navbar></app-navbar>
+
+<div class="row">
+  <div class="col-sm">
+    <div class="card m-3 mt-4">
+      <div class="card-header text-white" style="background-color: #009879;">
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+          aria-expanded="false" aria-controls="collapseExample" (click)="addPayment()">
+          Add New Payment
+        </button>
+      </div>
+      <div class="card-body">
+        <div *ngIf="form.state=='Add'">
+          <div class="collapse show" id="collapseExample">
+            <div class="card card-body">
+              <form [formGroup]="form.inputData" (ngSubmit)="onSubmit()">
+                <div class="form-group mb-3">
+                  <label for="cardOwnerName">Card Owner Name</label>
+                  <input type="text" class="form-control" id="cardOwnerName" aria-describedby="emailHelp"
+                    formControlName="cardOwnerName" name="cardOwnerName" placeholder="Enter Name">
+                  <span style="color:red" *ngIf="cardOwnerName && cardOwnerName.touched && cardOwnerName.invalid">
+                    Card Owner Name Is Required. min length is 5
+                  </span>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="cardNumber">Card Number</label>
+                  <input type="number" class="form-control" id="cardNumber" formControlName="cardNumber"
+                    placeholder="Enter Card Number">
+                    <span style="color:red" *ngIf="cardNumber && cardNumber.touched && cardNumber.invalid">
+                      Card Number Is Required. min length is 3, with number
+                    </span>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label for="securityCode">Security Code</label>
+                      <input type="text" class="form-control" id="securityCode" name="securityCode"
+                        formControlName="securityCode" placeholder="Enter Security Code">
+                        <span style="color:red" *ngIf="securityCode && securityCode.touched && securityCode.invalid">
+                          Security Code Is Required. with length is 4, With Uppercase, Lowercase, Simbol, Number
+                        </span>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group mb-3">
+                      <label for="expirationDate">Expiration Date</label>
+                      <input type="month" class="form-control" id="expirationDate" name="expirationDate"
+                        formControlName="expirationDate" placeholder="Enter Expiration Date">
+                        <span style="color:red" *ngIf="expirationDate && expirationDate.touched && expirationDate.invalid">
+                          Expiration Date Is Required.
+                        </span>
+                    </div>
+                  </div>
+                </div>
+                <button type="submit" class="btn btn-primary" data-bs-target="#suc_info" data-bs-toggle="modal"
+                  data-bs-dismiss="modal">Submit</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th> Payment Id </th>
+          <th> Card Number </th>
+          <th> Card Owner Name </th>
+          <th> Expiration Date </th>
+          <th> Action </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let payment of payments">
+          <td>{{payment.paymentDetailId}}</td>
+          <td>{{payment.cardNumber}}</td>
+          <td>{{payment.cardOwnerName}}</td>
+          <td>{{payment.expirationDate | date:"MM/yy"}}</td>
+          <td>
+            <button type="button" class="btn btn-sm btn-warning mr-2" (click)="editPayment(payment)"
+              data-bs-target="#edit" data-bs-toggle="modal">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button type="button" class="btn btn-sm btn-danger"
+              (click)="condel(payment.paymentDetailId!,payment.cardOwnerName)" data-bs-target="#hapus"
+              data-bs-toggle="modal">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="modal fade" id="edit" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+  aria-labelledby="exampleModalScrollableTitle" aria-hidden="true" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Data Payment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="form.inputData" (ngSubmit)="onSubmit()">
+          <div class="form-group" style="display: none">
+            <label for="paymentDetailId">Payment Detail ID</label>
+            <input type="text" class="form-control" id="paymentDetailId" aria-describedby="emailHelp"
+              formControlName="paymentDetailId" name="paymentDetailId" placeholder="Enter Name">
+          </div>
+          <div class="form-group">
+            <label for="cardOwnerName">Card Owner Name</label>
+            <input type="text" class="form-control" id="cardOwnerName" aria-describedby="emailHelp"
+              formControlName="cardOwnerName" name="cardOwnerName" placeholder="Enter Name">
+              <span style="color:red" *ngIf="cardOwnerName && cardOwnerName.touched && cardOwnerName.invalid">
+                Card Owner Name Is Required. min length is 5
+              </span>
+          </div>
+          <div class="form-group mb-3">
+            <label for="cardNumber">Card Number</label>
+            <input type="number" class="form-control" id="cardNumber" formControlName="cardNumber"
+              placeholder="Enter Card Number">
+              <span style="color:red" *ngIf="cardNumber && cardNumber.touched && cardNumber.invalid">
+                Card Number Is Required. min length is 3, with number
+              </span>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="securityCode">Security Code</label>
+                <input type="text" class="form-control" id="securityCode" name="securityCode"
+                  formControlName="securityCode" placeholder="Enter Security Code">
+                  <span style="color:red" *ngIf="securityCode && securityCode.touched && securityCode.invalid">
+                    Security Code Is Required. with length is 4, With Uppercase, Lowercase, Simbol, Number
+                  </span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group mb-3">
+                <label for="expirationDate">Expiration Date</label>
+                <input type="month" class="form-control" id="expirationDate" name="expirationDate"
+                  formControlName="expirationDate" placeholder="Enter Expiration Date">
+                  <span style="color:red" *ngIf="expirationDate && expirationDate.touched && expirationDate.invalid">
+                    Expiration Date Is Required.
+                  </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" type="submit" class="btn btn-primary" data-bs-target="#suc_info" 
+            data-bs-toggle="modal" data-bs-dismiss="modal">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="hapus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Yakin Hapus Data "{{names}}" ? </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete(ids)" data-bs-target="#suc_info"
+          data-bs-toggle="modal" data-bs-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="suc_info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div *ngIf="!suc_info && !errmsg">
+          <div class="d-flex align-items-center">
+            <strong>Loading...</strong>
+            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div *ngIf="suc_info">
+          <h5 class="modal-title" id="exampleModalLabel"> {{suc_info}} </h5>
+        </div>
+        <div *ngIf="errmsg">
+          <h5 class="modal-title" id="exampleModalLabel"> Upps.. Please Fill all Form </h5>
+        </div>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

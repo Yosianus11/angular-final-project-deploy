@@ -1,0 +1,51 @@
+  <div class="login-box">
+    <h2>Login</h2>
+    <form [formGroup]="signinForm" (ngSubmit)="signIn()">
+      <div class="user-box">
+        <input type="email" class="user-box" formControlName="email" required (change)="errNull()">
+        <span style="color:red" *ngIf="email && email.touched && email.invalid">
+          Email Is Required. Must Input Email type
+        </span>
+        <label>Email</label>
+      </div>
+      <div class="user-box">
+        <input type="password" class="user-box" formControlName="password" placeholder="password" required (change)="errNull()">
+        <span style="color:red" *ngIf="password && password.touched && password.invalid">
+          Password Is Required. min length is 8, With Uppercase, Lowercase, Simbol, Number & tandabaca
+        </span>
+        <label>Password</label>
+      </div>
+      <button type="submit" (click)="errNull()" style="background-color: transparent;" >
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        Submit
+      </button>
+     
+    </form>
+    <a class="small text-white text-center" [routerLink]="['/register']">Not have an account? Register!</a>
+  </div>
+
+  <div *ngIf="toast">
+    <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header" *ngIf="!success.login && !errmsg[0] && !errmsg.Email && !errmsg.Password">
+        <div class="d-flex align-items-center">
+          <strong>Loading...</strong>
+          <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+        </div>
+      </div>
+      <div class="toast-body">
+        <div *ngIf="success.login">
+          <h5 class="modal-title" id="exampleModalLabel"> {{success.login}} </h5>
+        </div>
+        <div *ngIf="errmsg[0]">
+          <h5 class="modal-title" id="exampleModalLabel"> {{errmsg[0]}} </h5>
+        </div>
+        <div *ngIf="errmsg.Email || errmsg.Password">
+          <h5 class="modal-title" id="exampleModalLabel"> {{errmsg.Email}} </h5>
+          <h5 class="modal-title" id="exampleModalLabel"> {{errmsg.Password}} </h5>
+        </div>
+      </div>
+    </div>
+  </div>
