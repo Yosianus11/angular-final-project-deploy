@@ -45,7 +45,6 @@ export class PaymentComponent implements OnInit {
 
   editPayment(row: Payment) {
     this.form.state = 'Edit'
-
     this.paymentDetailId?.setValue(row.paymentDetailId)
     this.cardOwnerName?.setValue(row.cardOwnerName)
     this.cardNumber?.setValue(row.cardNumber)
@@ -98,7 +97,7 @@ export class PaymentComponent implements OnInit {
         console.log(this.errmsg = err['$.expirationDate']);
       })
       this.toast = true;
-      setTimeout(() => {this.toast = false}, 5000);
+      setTimeout(() => { this.toast = false, this.reset()}, 3000);
   }
 
   updatePayment() {
@@ -119,7 +118,7 @@ export class PaymentComponent implements OnInit {
         console.log(this.errmsg = err['$.expirationDate']);
       })
     this.toast = true;
-    setTimeout(() => { this.toast = false }, 5000);
+    setTimeout(() => { this.toast = false, this.reset()}, 3000);
   }
 
   onSubmit() {
@@ -155,7 +154,7 @@ export class PaymentComponent implements OnInit {
   confirmDelete(id: number) {
     this.deletePayment(id)
     this.toast = true;
-    setTimeout(() => { this.toast = false }, 5000);
+    setTimeout(() => { this.toast = false, this.reset()}, 3000);
   }
 
 }
