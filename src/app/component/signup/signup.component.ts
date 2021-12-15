@@ -49,13 +49,14 @@ export class SignupComponent implements OnInit {
         this.signupForm.reset()
         this.success= res
         console.log(this.success= res)
-        this.router.navigate(['login'])
     },
       err => {
         console.log(this.errmsg = err);
        
       })
       this.toast = true;
+      setTimeout(() => {this.toast = false}, 5000);
+      setTimeout(() => {this.router.navigate(['login'])}, 7000);
   }
   
 

@@ -1,87 +1,70 @@
-<body>
-  <div class="container">
-    <div class="card o-hidden border-0 shadow-lg my-5">
-      <div class="card-body p-0">
-        <!-- Nested Row within Card Body -->
-        <div class="row">
-          <div class="col-lg-6 d-none d-lg-block bg-register-image">
-            <img width="600"
-              src="https://w0.peakpx.com/wallpaper/270/557/HD-wallpaper-payment-online-credit-card-online-shopping-credit-card-in-hand-laptop-computer-payment-concepts-business.jpg">
-          </div>
-          <div class="col-lg-6">
-            <div class="p-5">
-              <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
-              </div>
-              <form class="user" [formGroup]="signupForm" (ngSubmit)="registerUser()">
-                <div class="form-group mb-3">
-                  <input type="text" class="form-control" formControlName="userName" placeholder="Username" required (change)="errNull()">
-                  <span style="color:red" *ngIf="userName && userName.touched && userName.invalid">
-                    Name Is Required. min length is 5
-                  </span>
-                </div>
+<div class="row justify-content-center">
+  <div class="login-box p-4 p-md-5">
+    <div class="icon d-flex align-items-center justify-content-center">
+      <span><i class="bi bi-person-bounding-box"></i></span>
+    </div>
+    <h3 class="text-center mb-4" style="color:orange">Have an account?</h3>
+    <form class="login-form" [formGroup]="signupForm" (ngSubmit)="registerUser()">
 
-                <div class="form-group mb-3">
-                  <input type="email" class="form-control" formControlName="email" placeholder="Enter Email" required (change)="errNull()">
-                  <span style="color:red" *ngIf="email && email.touched && email.invalid">
-                    Email Is Required. Must Input Email type
-                  </span>
-                </div>
+      <div class="form-group">
+        <input type="text" class="form-control" formControlName="userName" placeholder="Username" required>
+        <span style="color:red" *ngIf="userName && userName.touched && userName.invalid">
+          Name Is Required. min length is 5
+        </span>
+      </div>
 
-
-                <div class="form-group ">
-                  <input type="password" class="form-control" formControlName="password" placeholder="password"
-                    required (change)="errNull()">
-                  <span style="color:red" *ngIf="password && password.touched && password.invalid">
-                    Password Is Required. min length is 8, With Uppercase, Lowercase, Simbol, Number
-                  </span>
-                </div>
-
-                <button type="submit" data-bs-target="#exampleModal" data-bs-toggle="modal"
-                  class="btn btn-block btn-primary mt-3" (click)="errNull()">Sign Up</button>
-              </form>
-              <div class="text-center">
-                <a class="small" [routerLink]="['/login']">Already have an account? Login!</a>
-              </div>
-            </div>
-          </div>
+      <div class="form-group">
+        <input type="email" class="form-control " placeholder="Email" formControlName="email" required>
+        <span style="color:red" *ngIf="email && email.touched && email.invalid">
+          Email Is Required. Must Input Email type
+        </span>
+      </div>
+      <div class="form-group d-flex">
+        <input type="password" class="form-control " formControlName="password" placeholder="password" required>
+      </div>
+      <span style="color:red" *ngIf="password && password.touched && password.invalid">
+        Password Is Required. min length is 8, With Uppercase, Lowercase, Symbol, Number
+      </span>
+      <div class="form-group d-md-flex">
+        <div class="w-60">
+          <a class="small" style="color:orange" [routerLink]="['/login']">Already have an account? Login!</a>
         </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" (click)="errNull()" class="btn btn-primary rounded submit p-3 px-5">Register</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="toast" class="d-flex align-items-center justify-content-center">
+  <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body"
+      *ngIf="!errmsg.Username && !errmsg.Email && !errmsg.Password && !errmsg[0] ! && !success.register">
+      <div class="d-flex align-items-center">
+        <strong>Loading...</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
       </div>
     </div>
-  </div>
-
-
-<div *ngIf="toast">
-  <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
-    <div class="toast-body">
-      <div *ngIf="!errmsg.Username && !errmsg.Email && !errmsg.Password && !errmsg[0] ! && !success.register">
-        <div class="d-flex align-items-center">
-          <strong>Loading...</strong>
-          <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-        </div>
+    <div *ngIf="success.register">
+      <div class="toast-body bg-info">
+        <h5 class="modal-title" style="color:white" id="exampleModalLabel"> <i class="bi bi-info-circle"></i>
+          {{success.register}} </h5>
       </div>
-      <div *ngIf="errmsg.Username || errmsg.Email || errmsg.Password">
-        <span style="color:red">
-          {{errmsg.Username}}
-        </span>
-        <br>
-        <span style="color:red">
-          {{errmsg.Email}}
-        </span>
-        <br>
-        <span style="color:red">
-          {{errmsg.Password}}
-        </span>
+    </div>
+    <div *ngIf="errmsg[0]">
+      <div class="toast-body bg-danger">
+        <h5 class="modal-title" style="color:white"><i class="bi bi-info-circle"></i> {{errmsg[0]}} </h5>
       </div>
-      <div *ngIf="errmsg[0]">
-        <span style="color:red">
-          {{errmsg}}
-        </span>
-      </div>
-      <div *ngIf="success">
-        <span style="color:green">
-          {{success.register}}
-        </span>
+    </div>
+    <div *ngIf="errmsg.Username || errmsg.Email || errmsg.Password">
+      <div class="toast-body bg-danger">
+        <h5 class="modal-title" *ngIf="errmsg.Username" style="color:white"><i class="bi bi-info-circle"></i>
+          {{errmsg.Username}} </h5>
+        <h5 class="modal-title" *ngIf="errmsg.Email" style="color:white"><i class="bi bi-info-circle"></i>
+          {{errmsg.Email}} </h5>
+        <h5 class="modal-title" *ngIf="errmsg.Password" style="color:white"><i class="bi bi-info-circle"></i>
+          {{errmsg.Password}} </h5>
       </div>
     </div>
   </div>

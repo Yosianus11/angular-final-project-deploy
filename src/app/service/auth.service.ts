@@ -28,6 +28,12 @@ export class AuthService {
       .post<any>(`${this.endpoint}/api/AuthManagement/Login`, user)
       .pipe(catchError(this.handleError))
   }
+
+  getUser(email:string) {
+    return this.http
+      .get(`${this.endpoint}/api/AuthManagement/${email}`)
+      .pipe(catchError(this.handleError))
+  }
  
   getToken() {
     return localStorage.getItem('access_token');
@@ -58,8 +64,7 @@ export class AuthService {
     console.log("refresh :"+refreshToken)
     console.log("Token:" + token)
     return this.http
-    .post(`${this.endpoint}/api/AuthManagement/RefreshToken`,
-     { token, refreshToken }) 
+    .post(`${this.endpoint}/api/AuthManagement/RefreshToken`,{ token, refreshToken }) 
     .pipe(catchError(this.handleError)); 
   }
 

@@ -1,51 +1,60 @@
-  <div class="login-box">
-    <h2>Login</h2>
-    <form [formGroup]="signinForm" (ngSubmit)="signIn()">
-      <div class="user-box">
-        <input type="email" class="user-box" formControlName="email" required (change)="errNull()">
+<div class="row justify-content-center">
+  <div class="login-box p-4 p-md-5">
+    <div class="icon d-flex align-items-center justify-content-center">
+      <span><i class="bi bi-person-fill"></i></span>
+    </div>
+    <h3 class="text-center mb-4" style="color:orange">Have an account?</h3>
+    <form class="login-form" [formGroup]="signinForm" (ngSubmit)="signIn()">
+      <div class="form-group">
+        <input type="email" class="form-control " placeholder="Email" formControlName="email" required
+          (change)="errNull()">
         <span style="color:red" *ngIf="email && email.touched && email.invalid">
           Email Is Required. Must Input Email type
         </span>
-        <label>Email</label>
       </div>
-      <div class="user-box">
-        <input type="password" class="user-box" formControlName="password" placeholder="password" required (change)="errNull()">
-        <span style="color:red" *ngIf="password && password.touched && password.invalid">
-          Password Is Required. min length is 8, With Uppercase, Lowercase, Simbol, Number & tandabaca
-        </span>
-        <label>Password</label>
+      <div class="form-group d-flex">
+        <input type="password" class="form-control " formControlName="password" placeholder="password" required
+          (change)="errNull()">
       </div>
-      <button type="submit" (click)="errNull()" style="background-color: transparent;" >
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        Submit
-      </button>
-     
+      <span style="color:red" *ngIf="password && password.touched && password.invalid">
+        Password Is Required. min length is 8, With Uppercase, Lowercase, Symbol, Number
+      </span>
+      <div class="form-group d-md-flex">
+        <div class="w-60">
+          <a [routerLink]="['/register']" style="color:orange">Not have an account? Register!</a>
+        </div>
+      </div>
+      <div class="form-group">
+        <button type="submit" (click)="errNull()" class="btn btn-primary rounded submit p-3 px-5">Login</button>
+      </div>
     </form>
-    <a class="small text-white text-center" [routerLink]="['/register']">Not have an account? Register!</a>
   </div>
+</div>
 
-  <div *ngIf="toast">
-    <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
-      <div class="toast-header" *ngIf="!success.login && !errmsg[0] && !errmsg.Email && !errmsg.Password">
-        <div class="d-flex align-items-center">
-          <strong>Loading...</strong>
-          <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-        </div>
+<div *ngIf="toast" class="d-flex align-items-center justify-content-center">
+  <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body" *ngIf="!success.login && !errmsg[0] && !errmsg.Email && !errmsg.Password">
+      <div class="d-flex align-items-center">
+        <strong>Loading...</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
       </div>
-      <div class="toast-body">
-        <div *ngIf="success.login">
-          <h5 class="modal-title" id="exampleModalLabel"> {{success.login}} </h5>
-        </div>
-        <div *ngIf="errmsg[0]">
-          <h5 class="modal-title" id="exampleModalLabel"> {{errmsg[0]}} </h5>
-        </div>
-        <div *ngIf="errmsg.Email || errmsg.Password">
-          <h5 class="modal-title" id="exampleModalLabel"> {{errmsg.Email}} </h5>
-          <h5 class="modal-title" id="exampleModalLabel"> {{errmsg.Password}} </h5>
-        </div>
+    </div>
+    <div *ngIf="success.login">
+      <div class="toast-body bg-info">
+        <h5 class="modal-title" style="color:white" id="exampleModalLabel"> <i class="bi bi-info-circle"></i> {{success.login}} </h5>
+      </div>
+    </div>
+    <div *ngIf="errmsg[0]">
+      <div class="toast-body bg-danger">
+        <h5 class="modal-title" style="color:white"><i class="bi bi-info-circle"></i> {{errmsg[0]}} </h5>
+      </div>
+    </div>
+    <div *ngIf="errmsg.Email || errmsg.Password">
+      <div class="toast-body bg-danger">
+        <h5 class="modal-title" style="color:white"><i class="bi bi-info-circle"></i> {{errmsg.Email}} </h5>
+        <h5 class="modal-title" style="color:white"><i class="bi bi-info-circle"></i> {{errmsg.Password}} </h5>
       </div>
     </div>
   </div>
+</div>
+

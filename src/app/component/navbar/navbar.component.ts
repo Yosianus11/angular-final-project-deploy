@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
+
+  userName = localStorage.getItem('user')
+
   logout() {
     localStorage.clear();
   }

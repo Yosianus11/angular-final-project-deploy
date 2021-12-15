@@ -14,15 +14,15 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 export class PaymentComponent implements OnInit {
   payments: Payment[] = [];
-  errmsg: string=''
-  success: any = {}
-  suc_info: string = ''
+  errmsg: string = '';
+  suc_info: string = '';
+  datenow: Date = new Date();
   ids: number = 0;
   names: string = '';
+  toast: boolean = false;
 
   reset() {
     this.errmsg = ''
-    this.success = {}
     this.suc_info = ''
   }
 
@@ -45,13 +45,11 @@ export class PaymentComponent implements OnInit {
 
   editPayment(row: Payment) {
     this.form.state = 'Edit'
-    const paymentData = this.form.inputData.value
-    paymentData.expirationDate = this.datepipe.transform(paymentData.expirationDate, 'yyyy-MM-ddTh:mm:ss');
 
     this.paymentDetailId?.setValue(row.paymentDetailId)
     this.cardOwnerName?.setValue(row.cardOwnerName)
     this.cardNumber?.setValue(row.cardNumber)
-    this.expirationDate?.setValue(paymentData.expirationDate)
+    this.expirationDate?.setValue(this.datepipe.transform(row.expirationDate, 'yyyy-MM'))
     this.securityCode?.setValue(row.securityCode)
   }
 
@@ -65,12 +63,18 @@ export class PaymentComponent implements OnInit {
     this.paymentService
       .getPayment().subscribe((res) => {
         this.payments = res.payment;
-        console.log(this.success = res.payment)
+        for (let i = 0; i < this.payments.length; i++) {
+          const paymentdate: Date = new Date(res.payment[i].expirationDate)
+          res.payment[i].expirationDate = paymentdate
+          console.log(paymentdate)
+        }
       },
         err => {
           console.log(this.errmsg = err);
         })
+  
   }
+
   addPayment() {
     this.form.state = 'Add'
     this.form.inputData.reset()
@@ -90,9 +94,11 @@ export class PaymentComponent implements OnInit {
         this.getPayment()
         this.form.inputData.reset()
       }, err => {
-        this.errmsg=err['$.expirationDate']
+        this.errmsg = err['$.expirationDate']
         console.log(this.errmsg = err['$.expirationDate']);
       })
+      this.toast = true;
+      setTimeout(() => {this.toast = false}, 5000);
   }
 
   updatePayment() {
@@ -109,9 +115,11 @@ export class PaymentComponent implements OnInit {
         this.getPayment();
         this.form.inputData.reset()
       }, err => {
-        this.errmsg=err['$.expirationDate']
+        this.errmsg = err['$.expirationDate']
         console.log(this.errmsg = err['$.expirationDate']);
       })
+    this.toast = true;
+    setTimeout(() => { this.toast = false }, 5000);
   }
 
   onSubmit() {
@@ -139,12 +147,15 @@ export class PaymentComponent implements OnInit {
         this.getPayment()
       },
         err => {
-          console.log(this.errmsg = err.$.expirationDate);
+          console.log(this.errmsg = err['$.expirationDate']);
         })
+    
   }
 
   confirmDelete(id: number) {
     this.deletePayment(id)
+    this.toast = true;
+    setTimeout(() => { this.toast = false }, 5000);
   }
 
 }

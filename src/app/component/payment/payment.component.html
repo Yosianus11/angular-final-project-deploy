@@ -1,9 +1,31 @@
 <app-navbar></app-navbar>
 
+<div *ngIf="toast" style="z-index:10;position: absolute;  left: 38%;">
+  <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-body" *ngIf="!suc_info && !errmsg">
+      <div class="d-flex align-items-center">
+        <strong>Loading...</strong>
+        <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+      </div>
+    </div>
+    <div *ngIf="suc_info">
+      <div class="toast-body bg-info">
+        <h5 class="modal-title" style="color:white" id="exampleModalLabel"> <i class="bi bi-info-circle"></i>
+          {{suc_info}} </h5>
+      </div>
+    </div>
+    <div *ngIf="errmsg">
+      <div class="toast-body bg-danger">
+        <h5 class="modal-title" style="color:white"><i class="bi bi-info-circle"></i> Upps.. Please Fill all Form </h5>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-sm">
     <div class="card m-3 mt-4">
-      <div class="card-header text-white" style="background-color: #009879;">
+      <div class="card-header text-white" style="background-color: orange;">
         <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
           aria-expanded="false" aria-controls="collapseExample" (click)="addPayment()">
           Add New Payment
@@ -26,9 +48,9 @@
                   <label for="cardNumber">Card Number</label>
                   <input type="number" class="form-control" id="cardNumber" formControlName="cardNumber"
                     placeholder="Enter Card Number">
-                    <span style="color:red" *ngIf="cardNumber && cardNumber.touched && cardNumber.invalid">
-                      Card Number Is Required. min length is 3, with number
-                    </span>
+                  <span style="color:red" *ngIf="cardNumber && cardNumber.touched && cardNumber.invalid">
+                    Card Number Is Required. min length is 3, with number
+                  </span>
                 </div>
                 <div class="row">
                   <div class="col-md-6">
@@ -36,9 +58,9 @@
                       <label for="securityCode">Security Code</label>
                       <input type="text" class="form-control" id="securityCode" name="securityCode"
                         formControlName="securityCode" placeholder="Enter Security Code">
-                        <span style="color:red" *ngIf="securityCode && securityCode.touched && securityCode.invalid">
-                          Security Code Is Required. with length is 4, With Uppercase, Lowercase, Simbol, Number
-                        </span>
+                      <span style="color:red" *ngIf="securityCode && securityCode.touched && securityCode.invalid">
+                        Security Code Is Required. with length is 4, With Uppercase, Lowercase, Simbol, Number
+                      </span>
                     </div>
                   </div>
                   <div class="col-md-6">
@@ -46,14 +68,14 @@
                       <label for="expirationDate">Expiration Date</label>
                       <input type="month" class="form-control" id="expirationDate" name="expirationDate"
                         formControlName="expirationDate" placeholder="Enter Expiration Date">
-                        <span style="color:red" *ngIf="expirationDate && expirationDate.touched && expirationDate.invalid">
-                          Expiration Date Is Required.
-                        </span>
+                      <span style="color:red"
+                        *ngIf="expirationDate && expirationDate.touched && expirationDate.invalid">
+                        Expiration Date Is Required.
+                      </span>
                     </div>
                   </div>
                 </div>
-                <button type="submit" class="btn btn-primary" data-bs-target="#suc_info" data-bs-toggle="modal"
-                  data-bs-dismiss="modal">Submit</button>
+                <button type="submit" class="btn btn-primary" (click)="reset()">Submit</button>
               </form>
             </div>
           </div>
@@ -62,37 +84,42 @@
     </div>
   </div>
 
-  <div class="col-sm">
-    <table class="styled-table">
-      <thead>
-        <tr>
-          <th> Payment Id </th>
-          <th> Card Number </th>
-          <th> Card Owner Name </th>
-          <th> Expiration Date </th>
-          <th> Action </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let payment of payments">
-          <td>{{payment.paymentDetailId}}</td>
-          <td>{{payment.cardNumber}}</td>
-          <td>{{payment.cardOwnerName}}</td>
-          <td>{{payment.expirationDate | date:"MM/yy"}}</td>
-          <td>
-            <button type="button" class="btn btn-sm btn-warning mr-2" (click)="editPayment(payment)"
-              data-bs-target="#edit" data-bs-toggle="modal">
-              <i class="bi bi-pencil"></i>
-            </button>
-            <button type="button" class="btn btn-sm btn-danger"
-              (click)="condel(payment.paymentDetailId!,payment.cardOwnerName)" data-bs-target="#hapus"
-              data-bs-toggle="modal">
-              <i class="bi bi-trash"></i>
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="col-sm-7">
+    <div class="card m-3 mt-4">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th> Payment Id </th>
+            <th> Card Number </th>
+            <th> Card Owner Name </th>
+            <th> Expiration Date </th>
+            <th> Action </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let payment of payments">
+            <td>{{payment.paymentDetailId}}</td>
+            <td>{{payment.cardNumber}}</td>
+            <td>{{payment.cardOwnerName}}</td>
+            <td>
+              <i class="bi bi-x-circle" *ngIf="payment.expirationDate < datenow" style="color:red"></i>
+              <i class="bi bi-check-circle" *ngIf="payment.expirationDate > datenow" style="color:green"></i>
+              {{payment.expirationDate | date:"MM/yy"}}</td>
+            <td>
+              <button type="button m-3" class="btn btn-sm btn-warning" (click)="editPayment(payment)" data-bs-target="#edit"
+                data-bs-toggle="modal">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button type="button ml-3" class="btn btn-sm btn-danger"
+                (click)="condel(payment.paymentDetailId!,payment.cardOwnerName)" data-bs-target="#hapus"
+                data-bs-toggle="modal">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 
@@ -115,17 +142,17 @@
             <label for="cardOwnerName">Card Owner Name</label>
             <input type="text" class="form-control" id="cardOwnerName" aria-describedby="emailHelp"
               formControlName="cardOwnerName" name="cardOwnerName" placeholder="Enter Name">
-              <span style="color:red" *ngIf="cardOwnerName && cardOwnerName.touched && cardOwnerName.invalid">
-                Card Owner Name Is Required. min length is 5
-              </span>
+            <span style="color:red" *ngIf="cardOwnerName && cardOwnerName.touched && cardOwnerName.invalid">
+              Card Owner Name Is Required. min length is 5
+            </span>
           </div>
           <div class="form-group mb-3">
             <label for="cardNumber">Card Number</label>
             <input type="number" class="form-control" id="cardNumber" formControlName="cardNumber"
               placeholder="Enter Card Number">
-              <span style="color:red" *ngIf="cardNumber && cardNumber.touched && cardNumber.invalid">
-                Card Number Is Required. min length is 3, with number
-              </span>
+            <span style="color:red" *ngIf="cardNumber && cardNumber.touched && cardNumber.invalid">
+              Card Number Is Required. min length is 3, with number
+            </span>
           </div>
           <div class="row">
             <div class="col-md-6">
@@ -133,9 +160,9 @@
                 <label for="securityCode">Security Code</label>
                 <input type="text" class="form-control" id="securityCode" name="securityCode"
                   formControlName="securityCode" placeholder="Enter Security Code">
-                  <span style="color:red" *ngIf="securityCode && securityCode.touched && securityCode.invalid">
-                    Security Code Is Required. with length is 4, With Uppercase, Lowercase, Simbol, Number
-                  </span>
+                <span style="color:red" *ngIf="securityCode && securityCode.touched && securityCode.invalid">
+                  Security Code Is Required. with length is 4, With Uppercase, Lowercase, Simbol, Number
+                </span>
               </div>
             </div>
             <div class="col-md-6">
@@ -143,17 +170,17 @@
                 <label for="expirationDate">Expiration Date</label>
                 <input type="month" class="form-control" id="expirationDate" name="expirationDate"
                   formControlName="expirationDate" placeholder="Enter Expiration Date">
-                  <span style="color:red" *ngIf="expirationDate && expirationDate.touched && expirationDate.invalid">
-                    Expiration Date Is Required.
-                  </span>
+                <span style="color:red" *ngIf="expirationDate && expirationDate.touched && expirationDate.invalid">
+                  Expiration Date Is Required.
+                </span>
               </div>
             </div>
           </div>
 
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" type="submit" class="btn btn-primary" data-bs-target="#suc_info" 
-            data-bs-toggle="modal" data-bs-dismiss="modal">Save changes</button>
+            <button type="button" type="submit" class="btn btn-primary" data-bs-target="#suc_info"
+              data-bs-toggle="modal" data-bs-dismiss="modal">Save changes</button>
           </div>
         </form>
       </div>
@@ -172,31 +199,6 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         <button type="button" class="btn btn-danger" (click)="confirmDelete(ids)" data-bs-target="#suc_info"
           data-bs-toggle="modal" data-bs-dismiss="modal">Delete</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="suc_info" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <div *ngIf="!suc_info && !errmsg">
-          <div class="d-flex align-items-center">
-            <strong>Loading...</strong>
-            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
-          </div>
-        </div>
-        <div *ngIf="suc_info">
-          <h5 class="modal-title" id="exampleModalLabel"> {{suc_info}} </h5>
-        </div>
-        <div *ngIf="errmsg">
-          <h5 class="modal-title" id="exampleModalLabel"> Upps.. Please Fill all Form </h5>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="reset()">Close</button>
       </div>
     </div>
   </div>
