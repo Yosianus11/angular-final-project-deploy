@@ -2,8 +2,8 @@
   "name": "payment-app",
   "version": "0.0.0",
   "scripts": {
-    "ng": "node index.js",
-    "start": "ng serve --proxy-config proxy.conf.json",
+    "ng": "ng",
+    "start": "node index.js",
     "build": "ng build --prod",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
