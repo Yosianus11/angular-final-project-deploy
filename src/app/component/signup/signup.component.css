@@ -40,9 +40,6 @@
   color: #fff;
 }
 
-
-
-
 .form-control {
   height: 48px;
   background: rgba(0, 0, 0, 0.05);
@@ -66,12 +63,6 @@
   font-size: 15px;
   padding: 10px 20px;
   border-radius: 50px;
-}
-
-.btn:hover,
-.btn:active,
-.btn:focus {
-  outline: none;
 }
 
 .btn.btn-primary {
