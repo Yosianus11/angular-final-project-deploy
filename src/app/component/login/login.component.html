@@ -5,7 +5,7 @@
     </div>
     <h3 class="text-center mb-4" style="color:orange">Have an account?</h3>
     <form class="login-form" [formGroup]="signinForm" (ngSubmit)="signIn()">
-      <div class="form-group">
+      <div class="form-group mb-3">
         <input type="email" class="form-control " placeholder="Email" formControlName="email" required
           (change)="errNull()">
         <span style="color:red" *ngIf="email && email.touched && email.invalid">
