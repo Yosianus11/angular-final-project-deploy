@@ -21,8 +21,6 @@ export class LoginComponent implements OnInit {
     this.toast = false;
   }
 
-  
-
   signinForm = new FormGroup({
     password: new FormControl('', [Validators.required, Validators.minLength(5), Validators.pattern(/^(?=\D*\d)(?=[^a-z]*[a-z])(?=.*[$@$!%*?&_])(?=[^A-Z]*[A-Z]).{8,20}$/)]),
     email: new FormControl('', [Validators.required, Validators.email])
@@ -59,6 +57,6 @@ export class LoginComponent implements OnInit {
         console.log(this.errmsg = err);
       })
     this.toast = true
-    setTimeout(() => {this.toast = false}, 4000);
+    setTimeout(() => {this.toast = false, this.errNull()}, 8000);
   }
 }

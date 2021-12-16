@@ -55,7 +55,7 @@ export class SignupComponent implements OnInit {
        
       })
       this.toast = true;
-      setTimeout(() => {this.toast = false}, 5000);
+      setTimeout(() => {this.toast = false, this.errNull()}, 5000);
       setTimeout(() => {this.router.navigate(['login'])}, 7000);
   }
   
