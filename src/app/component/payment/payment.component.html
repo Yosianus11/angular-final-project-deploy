@@ -1,6 +1,7 @@
 <app-navbar></app-navbar>
 
-<div *ngIf="toast" style="z-index:10;position: absolute;  left: 38%;">
+<div *ngIf="toast" style="z-index:10;position: absolute; left:40%;
+margin-left:-20px;">
   <div class="toast fade show" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-body" *ngIf="!suc_info && !errmsg">
       <div class="d-flex align-items-center">
@@ -84,41 +85,43 @@
     </div>
   </div>
 
-  <div class="col-sm-7">
-    <div class="card m-3 mt-4">
-      <table class="styled-table">
-        <thead>
-          <tr>
-            <th> Payment Id </th>
-            <th> Card Number </th>
-            <th> Card Owner Name </th>
-            <th> Expiration Date </th>
-            <th> Action </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let payment of payments">
-            <td>{{payment.paymentDetailId}}</td>
-            <td>{{payment.cardNumber}}</td>
-            <td>{{payment.cardOwnerName}}</td>
-            <td>
-              <i class="bi bi-x-circle" *ngIf="payment.expirationDate < datenow" style="color:red"></i>
-              <i class="bi bi-check-circle" *ngIf="payment.expirationDate > datenow" style="color:green"></i>
-              {{payment.expirationDate | date:"MM/yy"}}</td>
-            <td>
-              <button type="button m-3" class="btn btn-sm btn-warning" (click)="editPayment(payment)" data-bs-target="#edit"
-                data-bs-toggle="modal">
-                <i class="bi bi-pencil"></i>
-              </button>
-              <button type="button ml-3" class="btn btn-sm btn-danger"
-                (click)="condel(payment.paymentDetailId!,payment.cardOwnerName)" data-bs-target="#hapus"
-                data-bs-toggle="modal">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="col-sm">
+    <div class="card m-3 mt-4" style=" height: 390px;  overflow-x: scroll">
+      <div class="table-responsive-sm" >
+        <table class="table" >
+          <thead style="position:sticky !important;">
+            <tr style="background-color:orange; color:white;">
+              <th> Payment Id </th>
+              <th> Card Number </th>
+              <th> Card Owner Name </th>
+              <th> Expiration Date </th>
+              <th> Action </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let payment of payments">
+              <td>{{payment.paymentDetailId}}</td>
+              <td>{{payment.cardNumber}}</td>
+              <td>{{payment.cardOwnerName}}</td>
+              <td>
+                <i class="bi bi-x-circle" *ngIf="payment.expirationDate < datenow" style="color:red"></i>
+                <i class="bi bi-check-circle" *ngIf="payment.expirationDate > datenow" style="color:green"></i>
+                {{payment.expirationDate | date:"MM/yy"}}</td>
+              <td>
+                <button type="button m-3" class="btn btn-sm btn-warning" (click)="editPayment(payment)"
+                  data-bs-target="#edit" data-bs-toggle="modal">
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button type="button ml-3" class="btn btn-sm btn-danger"
+                  (click)="condel(payment.paymentDetailId!,payment.cardOwnerName)" data-bs-target="#hapus"
+                  data-bs-toggle="modal">
+                  <i class="bi bi-trash"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>
